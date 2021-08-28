@@ -11,7 +11,7 @@ from os.path import dirname, exists, isdir, join
 from text2speech.util import get_cache_directory, remove_last_slash
 from ovos_utils.lang.phonemes import get_phonemes
 from ovos_utils.log import LOG
-from ovos_utils.plugins.tts import TTS as _TTS, TTSValidator as _TTSValidator
+from text2speech.plugins.tts import TTS as _TTS, TTSValidator as _TTSValidator
 
 
 class TTS(_TTS):
