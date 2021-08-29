@@ -58,7 +58,7 @@ setup(
                       "ResponsiveVoice",
                       "psutil",
                       "gTTS>=2.2.1",
-                      "pyee==8.1.0",
+                      "pyee",
                       "voxpopuli"],
     author_email='jarbasai@mailfence.com',
     description='TTS engines',
