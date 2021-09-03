@@ -32,9 +32,10 @@ class ESpeak(TTS):
                 tag = tag.replace(val, new_val)
         return tag
 
-    def get_tts(self, sentence, wav_file):
+    def get_tts(self, sentence, wav_file, lang=None):
+        lang = lang or self.lang
         subprocess.call(
-            ['espeak', '-m', "-w", wav_file, '-v', self.lang + '+' +
+            ['espeak', '-m', "-w", wav_file, '-v', lang + '+' +
              self.voice, sentence])
 
         return wav_file, None
@@ -66,4 +67,3 @@ class ESpeakValidator(TTSValidator):
 
     def get_tts_class(self):
         return ESpeak
-

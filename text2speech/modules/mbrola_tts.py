@@ -19,22 +19,26 @@ class MbrolaTTS(TTS):
         self.volume = self.config.get("volume")  # float 0 - 1
         self.voice_id = self.config.get("voice_id")
 
-    def get_tts(self, sentence, wav_file):
-        wav_file = self._get_wav(sentence, wav_file)
+    def get_tts(self, sentence, wav_file, lang=None):
+        lang = lang or self.lang
+        wav_file = self._get_wav(sentence, wav_file, lang=lang)
         #phoneme_list = self._get_phonemes(sentence)
         #phones = " ".join([":".join(pho) for pho in phoneme_list])
         phones = None
         return wav_file, phones
 
-    def describe_voices(self):
-        return self.get_voice().listvoices()
+    def describe_voices(self, lang=None):
+        lang = lang or self.lang
+        return self.get_voice(lang=lang).listvoices()
 
-    def get_voice(self):
-        return Voice(lang=self.lang, pitch=self.pitch, speed=self.speed,
+    def get_voice(self, lang=None):
+        lang = lang or self.lang
+        return Voice(lang=lang, pitch=self.pitch, speed=self.speed,
                      voice_id=self.voice_id, volume=self.volume)
 
-    def _get_phonemes(self, utterance, arpabet=False):
-        voice = self.get_voice()
+    def _get_phonemes(self, utterance, arpabet=False, lang=None):
+        lang = lang or self.lang
+        voice = self.get_voice(lang=lang)
         if arpabet:
             return [(ipa2arpabet(phoneme.name), phoneme.duration) for
                     phoneme in voice.to_phonemes(utterance)]
@@ -42,8 +46,9 @@ class MbrolaTTS(TTS):
             return [(phoneme.name, phoneme.duration) for
                     phoneme in voice.to_phonemes(utterance)]
 
-    def _get_wav(self, utterance, out_file=None):
-        voice = self.get_voice()
+    def _get_wav(self, utterance, out_file=None, lang=None):
+        lang = lang or self.lang
+        voice = self.get_voice(lang=lang)
         wav = voice.to_audio(utterance)
         if out_file is None:
             out_file = join(gettempdir(), "voxpopuli.wav")

@@ -62,10 +62,11 @@ class VoiceRSSTTS(TTS):
 
         return params
 
-    def get_tts(self, sentence, wav_file):
+    def get_tts(self, sentence, wav_file, lang=None):
+        lang = lang or self.lang
         bin_data = self.__speech({
             'key': self.key,
-            'hl': self.lang,
+            'hl': lang,
             'src': sentence,
             'r': '0',
             'c': self.audio_ext,
@@ -114,4 +115,3 @@ class VoiceRSSValidator(TTSValidator):
 
     def get_tts_class(self):
         return VoiceRSSTTS
-

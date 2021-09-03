@@ -35,7 +35,8 @@ class PollyTTS(TTS):
                      self.describe_voices()[self.lang][0]
         self._voices = None
 
-    def get_tts(self, sentence, wav_file):
+    def get_tts(self, sentence, wav_file, lang=None):
+        lang = lang or self.lang
         text_type = "text"
         if self.remove_ssml(sentence) != sentence:
             text_type = "ssml"
@@ -46,7 +47,7 @@ class PollyTTS(TTS):
             OutputFormat=self.audio_ext,
             Text=sentence,
             TextType=text_type,
-            VoiceId=self.voice)
+            VoiceId=self.describe_voices()[lang][0])
 
         with open(wav_file, 'wb') as f:
             f.write(response['AudioStream'].read())
@@ -89,4 +90,3 @@ class PollyTTSValidator(TTSValidator):
 
     def get_tts_class(self):
         return PollyTTS
-

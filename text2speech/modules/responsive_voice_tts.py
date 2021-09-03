@@ -21,17 +21,13 @@ class ResponsiveVoiceTTS(TTS):
         self.rate = config.get("rate", 0.5)
         self.vol = config.get("vol", 1)
 
-        if self.voice:
-            clazz = get_voices()[self.voice]
-            self.engine = clazz(pitch=self.pitch, rate=self.rate, vol=self.vol)
-        else:
-            gender = config.get("gender", "male")
-            self.engine = ResponsiveVoice(lang=self.lang, gender=gender,
-                                          pitch=self.pitch, rate=self.rate,
-                                          vol=self.vol)
-
-    def get_tts(self, sentence, wav_file):
-        self.engine.get_mp3(sentence, wav_file)
+    def get_tts(self, sentence, wav_file, lang=None):
+        lang = lang or self.lang
+        gender = config.get("gender", "male")
+        engine = ResponsiveVoice(lang=lang, gender=gender,
+                                      pitch=self.pitch, rate=self.rate,
+                                      vol=self.vol)
+        engine.get_mp3(sentence, wav_file)
         return (wav_file, None)  # No phonemes
 
     def describe_voices(self):

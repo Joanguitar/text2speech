@@ -52,7 +52,7 @@ setup(
     url='https://github.com/HelloChatterbox/text2speech',
     license='apache',
     author='jarbasAI',
-    install_requires=["ovos_utils>=0.0.9",
+    install_requires=["ovos_utils>=0.0.10",
                       "requests_futures",
                       "boto3",
                       "ResponsiveVoice",

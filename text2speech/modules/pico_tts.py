@@ -3,28 +3,33 @@ import subprocess
 from text2speech.modules import TTS, TTSValidator
 
 
+def lang_format(lang):
+    if lang.startswith("de"):
+        voice = "de-DE"
+    elif lang.startswith("es"):
+        voice = "es-ES"
+    elif lang.startswith("fr"):
+        voice = "fr-FR"
+    elif lang.startswith("it"):
+        voice = "it-IT"
+    elif lang.startswith("en"):
+        voice = "en-US"
+        if "gb" in lang.lower() or "uk" in lang.lower():
+            voice = "en-GB"
+            return voice
+
 class PicoTTS(TTS):
     audio_ext = "wav"
 
     def __init__(self, config=None):
         config = config or {"lang": "en-US"}
         super(PicoTTS, self).__init__(config, PicoTTSValidator(self))
-        if self.lang.startswith("de"):
-            self.voice = "de-DE"
-        elif self.lang.startswith("es"):
-            self.voice = "es-ES"
-        elif self.lang.startswith("fr"):
-            self.voice = "fr-FR"
-        elif self.lang.startswith("it"):
-            self.voice = "it-IT"
-        elif self.lang.startswith("en"):
-            self.voice = "en-US"
-            if "gb" in self.lang.lower() or "uk" in self.lang.lower():
-                self.voice = "en-GB"
+        self.voice = lang_format(self.lang)
 
-    def get_tts(self, sentence, wav_file):
+    def get_tts(self, sentence, wav_file, lang=None):
+        lang = lang or self.lang
         subprocess.call(
-            ['pico2wave', '-l', self.voice, "-w", wav_file, sentence])
+            ['pico2wave', '-l', lang_format(lang), "-w", wav_file, sentence])
 
         return wav_file, None
 

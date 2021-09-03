@@ -62,8 +62,9 @@ class GoogleTTS(TTS):
 
         self.voice = self.describe_voices()[self.lang][0]
 
-    def get_tts(self, sentence, wav_file):
-        tts = gTTS(sentence, lang=self.lang)
+    def get_tts(self, sentence, wav_file, lang=None):
+        lang = lang or self.lang
+        tts = gTTS(sentence, lang=lang)
         tts.save(wav_file)
         return (wav_file, None)  # No phonemes
 
