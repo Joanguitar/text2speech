@@ -64,9 +64,14 @@ class VoiceRSSTTS(TTS):
 
     def get_tts(self, sentence, wav_file, lang=None):
         lang = lang or self.lang
+        voices = describe_voices()
+        if lang in voices.keys():
+            voice = voices[lang]
+        else:
+            voice = self.voice
         bin_data = self.__speech({
             'key': self.key,
-            'hl': lang,
+            'hl': voice,
             'src': sentence,
             'r': '0',
             'c': self.audio_ext,
